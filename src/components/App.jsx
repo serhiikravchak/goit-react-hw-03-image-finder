@@ -39,10 +39,14 @@ export class App extends Component {
         this.setState({ isLoading: true });
 
         const images = await PixabayApi.axiosImages(newQuery);
-        
         if (images.totalHits > PixabayApi.perPage) {
           this.setState({ showLoadMore: true });
         }
+
+        if (nextPage + 1 > Math.ceil(images.totalHits / PixabayApi.perPage)) {
+          this.setState({isLoading: false, showLoadMore: false})
+        }
+
 
          if (images.total === 0) {
            repeatRequest();
